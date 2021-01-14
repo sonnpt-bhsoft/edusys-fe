@@ -8,13 +8,23 @@ export const register = async (req, res) => {
         if (user) {
             return res.status(400).json({ message: 'User already existed' })
         }
-        const { firstName, lastName, email, password, role } = req.body
-        const hash_password = await bcrypt.hash(password, 10)
-        const _user = new User({ firstName, lastName, email, hash_password, role })
+        const newUser = {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            password: req.body.password,
+            role: req.body.role
+        }
+        newUser.hash_password = await bcrypt.hash(req.body.password, 10)
+        if (req.file) {
+            newUser.profilePicture = process.env.API + '/public/' + req.file.filename
+        }
+        const _user = new User(newUser)
         await _user.save()
         res.status(201).json({ _user, messages: 'User created successfully!!!' })
     } catch (error) {
         res.status(400).json({ message: error.message })
+        console.log(error)
     }
 }
 
