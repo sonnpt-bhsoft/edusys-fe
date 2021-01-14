@@ -5,12 +5,13 @@ import mongoose from "mongoose"
 import cors from "cors"
 import route from './routes/index.js'
 import path from 'path'
+import morgan from 'morgan'
 
 const app = express()
 
 // env config
 dotenv.config()
-
+app.use(morgan('dev'))
 // Express config
 app.use(bodyParser.json({ limit: "30mb", extended: true }))
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }))

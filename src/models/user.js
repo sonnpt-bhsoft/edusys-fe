@@ -29,14 +29,21 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['student', 'admin', 'trainer'],
-        default: 'student'
+        enum: ['student', 'admin', 'trainer', 'teacher'],
     },
     contact: {
         type: String,
     },
     profilePicture: {
         type: String
+    },
+    is_deleted: {
+        type: Boolean,
+        default: false
+    },
+    is_active: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true })
 

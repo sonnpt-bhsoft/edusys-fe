@@ -8,9 +8,9 @@ export const register = async (req, res) => {
         if (user) {
             return res.status(400).json({ message: 'User already existed' })
         }
-        const { firstName, lastName, email, password } = req.body
+        const { firstName, lastName, email, password, role } = req.body
         const hash_password = await bcrypt.hash(password, 10)
-        const _user = new User({ firstName, lastName, email, hash_password })
+        const _user = new User({ firstName, lastName, email, hash_password, role })
         await _user.save()
         res.status(201).json({ _user, messages: 'User created successfully!!!' })
     } catch (error) {
@@ -25,7 +25,7 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: 'Authentication failed. User not found.' })
         } else {
             if (user.comparePassword(req.body.password)) {
-                const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '2h' })
+                const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '365d' })
                 const { _id, firstName, lastName, email, role, fullName } = user
                 res.status(200).json({
                     token,
