@@ -1,9 +1,9 @@
-import User from '../models/user.js'
+import { User } from '../models/user.js'
 
 export const updateUser = async (req, res) => {
     try {
-        const id = req.params.id;
-        const user = await User.findOneAndUpdate({ _id: id },{
+        const { id: _id } = req.params;
+        const user = await User.findOneAndUpdate({ _id },{
             firstName: req.body.firstName,
             lastName: req.body.lastName,
         }, {new: true})

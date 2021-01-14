@@ -34,9 +34,7 @@ const userSchema = new mongoose.Schema({
     contact: {
         type: String,
     },
-    profilePicture: {
-        type: String
-    },
+    profilePicture: String,
     is_deleted: {
         type: Boolean,
         default: false
@@ -48,13 +46,8 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 userSchema.virtual('fullName')
-    .get(function () {
-        return `${this.firstName} ${this.lastName}`
-    })
+    .get(() => `${this.firstName} ${this.lastName}`)
 
-userSchema.methods.comparePassword = function (password) {
-    return bcrypt.compareSync(password, this.hash_password);
-};
+userSchema.methods.comparePassword = password => bcrypt.compareSync(password, this.hash_password);
 
-const User = mongoose.model('User', userSchema)
-export default User
+export const User = mongoose.model('User', userSchema)
